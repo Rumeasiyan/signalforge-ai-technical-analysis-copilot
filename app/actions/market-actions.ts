@@ -2,10 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
-import {
-    generateTechnicalAnalysis,
-    parseTimeframe,
-} from '@/lib/market/analysis-engine';
+import { parseTimeframe } from '@/lib/market/analysis-engine';
+import { generateTechnicalAnalysisWithGemini } from '@/lib/ai/gemini-technical-analysis';
 import { getCurrentDbUser, resolveInstrument } from '@/lib/market/repository';
 
 export async function runAnalysisAction(formData: FormData) {
@@ -30,7 +28,7 @@ export async function runAnalysisAction(formData: FormData) {
         return;
     }
 
-    const analysis = generateTechnicalAnalysis(symbol, timeframe);
+    const analysis = await generateTechnicalAnalysisWithGemini(symbol, timeframe);
 
     await prisma.analysis.create({
         data: {
