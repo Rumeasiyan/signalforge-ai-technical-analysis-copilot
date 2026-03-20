@@ -7,13 +7,13 @@ This project uses Prisma v7 with the PostgreSQL driver adapter and a local Postg
 Expected local database name:
 
 ```text
-starterkit-nextjs-clerk
+signalforge-ai-technical-analysis-copilot
 ```
 
 Expected connection string:
 
 ```env
-DATABASE_URL="postgres://rumeasiyan@localhost:5432/starterkit-nextjs-clerk"
+DATABASE_URL="postgres://rumeasiyan@localhost:5432/signalforge-ai-technical-analysis-copilot"
 ```
 
 Update the username if your local Postgres user is different.
