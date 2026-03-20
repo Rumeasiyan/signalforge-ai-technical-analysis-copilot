@@ -7,9 +7,9 @@ type AuthShellProps = {
 };
 
 const points = [
-    'Secure account flows with Clerk',
-    'Dark and light theme support',
-    'Simple layout that is easy to replace later',
+    'AI-assisted multi-timeframe market analysis',
+    'Watchlist, scenario planning, and history tracking',
+    'Secure authentication with Clerk',
 ];
 
 export function AuthShell({ children, mode }: AuthShellProps) {
@@ -21,15 +21,15 @@ export function AuthShell({ children, mode }: AuthShellProps) {
                 <section className="max-w-xl space-y-6">
                     <div className="space-y-4">
                         <p className="text-xs font-medium uppercase tracking-[0.24em] text-muted-foreground">
-                            StarterKit auth
+                            SignalForge access
                         </p>
                         <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
                             {isSignIn ? 'Welcome back' : 'Create your account'}
                         </h1>
                         <p className="max-w-lg text-base leading-7 text-muted-foreground sm:text-lg">
                             {isSignIn
-                                ? 'Sign in to continue to your workspace.'
-                                : 'Set up your account and start using the app.'}
+                                ? 'Sign in to continue your technical analysis workflow.'
+                                : 'Set up your account and start your market intelligence workspace.'}
                         </p>
                     </div>
 

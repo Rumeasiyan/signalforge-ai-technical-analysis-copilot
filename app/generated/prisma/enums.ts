@@ -9,7 +9,31 @@
 * 🟢 You can import this file directly.
 */
 
+export const InstrumentType = {
+  STOCK: 'STOCK',
+  INDEX: 'INDEX',
+  ETF: 'ETF',
+  FOREX: 'FOREX',
+  CRYPTO: 'CRYPTO',
+  COMMODITY: 'COMMODITY'
+} as const
+
+export type InstrumentType = (typeof InstrumentType)[keyof typeof InstrumentType]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const AnalysisTimeframe = {
+  SHORT_TERM: 'SHORT_TERM',
+  MEDIUM_TERM: 'MEDIUM_TERM',
+  LONG_TERM: 'LONG_TERM'
+} as const
+
+export type AnalysisTimeframe = (typeof AnalysisTimeframe)[keyof typeof AnalysisTimeframe]
+
+
+export const DirectionalBias = {
+  BULLISH: 'BULLISH',
+  BEARISH: 'BEARISH',
+  NEUTRAL: 'NEUTRAL'
+} as const
+
+export type DirectionalBias = (typeof DirectionalBias)[keyof typeof DirectionalBias]

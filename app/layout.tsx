@@ -28,8 +28,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: 'StarterKit Auth',
-    description: 'Minimal Next.js and Clerk starter',
+    title: 'SignalForge - AI Technical Analysis Copilot',
+    description: 'AI-assisted multi-timeframe technical analysis workspace',
 };
 
 const userButtonAppearance = {
@@ -81,22 +81,53 @@ export default async function RootLayout({
                 <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up">
                     <header className="sticky top-0 z-20 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
                         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-                            <Link
-                                href="/"
-                                className="inline-flex min-w-0 items-center gap-3"
-                            >
-                                <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
-                                    S
-                                </span>
-                                <span className="min-w-0">
-                                    <span className="block truncate text-xs font-medium uppercase tracking-[0.24em] text-muted-foreground">
-                                        StarterKit
+                            <div className="flex min-w-0 items-center gap-4">
+                                <Link
+                                    href="/"
+                                    className="inline-flex min-w-0 items-center gap-3"
+                                >
+                                    <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
+                                        SF
                                     </span>
-                                    <span className="block truncate text-sm font-medium text-foreground">
-                                        Authentication
+                                    <span className="min-w-0">
+                                        <span className="block truncate text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
+                                            SignalForge
+                                        </span>
+                                        <span className="block truncate text-sm font-semibold text-foreground">
+                                            AI Technical Analysis Copilot
+                                        </span>
                                     </span>
-                                </span>
-                            </Link>
+                                </Link>
+
+                                <Show when="signed-in">
+                                    <nav className="hidden items-center gap-1 rounded-lg border border-border/50 bg-card/70 p-1 md:flex">
+                                        <Link
+                                            href="/dashboard"
+                                            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-accent/60 hover:text-foreground"
+                                        >
+                                            Dashboard
+                                        </Link>
+                                        <Link
+                                            href="/analysis"
+                                            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-accent/60 hover:text-foreground"
+                                        >
+                                            Analysis
+                                        </Link>
+                                        <Link
+                                            href="/watchlist"
+                                            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-accent/60 hover:text-foreground"
+                                        >
+                                            Watchlist
+                                        </Link>
+                                        <Link
+                                            href="/history"
+                                            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-accent/60 hover:text-foreground"
+                                        >
+                                            History
+                                        </Link>
+                                    </nav>
+                                </Show>
+                            </div>
 
                             <div className="flex items-center gap-3">
                                 <ThemeToggle />

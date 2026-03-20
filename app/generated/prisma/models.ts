@@ -9,4 +9,7 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
+export type * from './models/Instrument'
+export type * from './models/WatchlistItem'
+export type * from './models/Analysis'
 export type * from './commonInputTypes'

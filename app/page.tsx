@@ -1,61 +1,39 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
 import { Button } from '@/components/ui/button';
 
-export default function Home() {
+export default async function Home() {
+    const { userId } = await auth();
+
+    if (userId) {
+        redirect('/dashboard');
+    }
+
     return (
-        <main className="flex flex-1">
-            <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-10 sm:px-6 lg:justify-center lg:py-16">
-                <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
-                    <section className="min-w-0 max-w-3xl space-y-6">
-                        <p className="text-xs font-medium uppercase tracking-[0.24em] text-muted-foreground">
-                            StarterKit auth
-                        </p>
-                        <h1 className="text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-                            Minimal authentication starter with clean defaults.
-                        </h1>
-                        <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                            App Router, Clerk keyless mode, custom auth routes,
-                            and a simple theme switcher. The auth UI stays close
-                            to Clerk&apos;s defaults so it is easy to replace or
-                            expand later.
-                        </p>
-
-                        <div className="flex flex-col gap-3 sm:flex-row">
-                            <Button asChild size="lg">
-                                <Link href="/sign-up">Create account</Link>
-                            </Button>
-                            <Button asChild variant="outline" size="lg">
-                                <Link href="/sign-in">Sign in</Link>
-                            </Button>
-                        </div>
-                    </section>
-
-                    <section className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-                        <div className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm">
-                            <p className="text-sm font-medium">
-                                Custom auth routes
-                            </p>
-                            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                                Sign in and sign up pages live in the App Router.
-                            </p>
-                        </div>
-                        <div className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm">
-                            <p className="text-sm font-medium">
-                                Clerk defaults
-                            </p>
-                            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                                The layout wraps Clerk cleanly without heavy visual overrides.
-                            </p>
-                        </div>
-                        <div className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm">
-                            <p className="text-sm font-medium">
-                                Theme switcher
-                            </p>
-                            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                                Dark and light modes are available from the header.
-                            </p>
-                        </div>
-                    </section>
+        <main className="relative flex flex-1 overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(22,163,74,0.16),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(14,116,144,0.14),transparent_42%),linear-gradient(180deg,rgba(11,18,32,0.06),transparent_40%)] dark:bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.22),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(14,116,144,0.25),transparent_42%),linear-gradient(180deg,rgba(2,6,23,0.7),transparent_55%)]" />
+            <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:py-20">
+                <div className="max-w-4xl space-y-7">
+                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:text-sky-300">
+                        Institutional-grade market workflow
+                    </p>
+                    <h1 className="text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                        Cut chart-reading fatigue with an AI technical analysis copilot.
+                    </h1>
+                    <p className="max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">
+                        SignalForge turns raw market structure, indicator context, and multi-timeframe conflict into
+                        clear trading scenarios. Built for discretionary traders, research teams, and advisory desks that
+                        need consistent technical reads at speed.
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                        <Button asChild size="lg">
+                            <Link href="/sign-up">Start with your workspace</Link>
+                        </Button>
+                        <Button asChild variant="outline" size="lg">
+                            <Link href="/sign-in">Sign in</Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </main>

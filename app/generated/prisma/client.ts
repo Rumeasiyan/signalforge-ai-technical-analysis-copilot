@@ -46,3 +46,18 @@ export { Prisma }
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Instrument
+ * 
+ */
+export type Instrument = Prisma.InstrumentModel
+/**
+ * Model WatchlistItem
+ * 
+ */
+export type WatchlistItem = Prisma.WatchlistItemModel
+/**
+ * Model Analysis
+ * 
+ */
+export type Analysis = Prisma.AnalysisModel
