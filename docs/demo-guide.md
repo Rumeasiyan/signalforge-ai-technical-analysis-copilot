@@ -33,6 +33,7 @@ Complete before presenting:
 3. At least one user account available for sign-in.
 4. A few sample analyses already generated (optional but recommended).
 5. Watchlist has 3 to 8 instruments for a non-empty first impression.
+6. `GEMINI_API_KEY` is set for AI narrative refinement (optional but recommended).
 
 ## Pre-demo prep (10 minutes)
 
@@ -41,6 +42,18 @@ Complete before presenting:
 3. Open `/analysis` and test at least one symbol (for example: NVDA, SPY, BTCUSD).
 4. Open `/watchlist` and confirm setup quality and confidence values show.
 5. Open `/history` and confirm at least a few snapshots exist.
+
+### Data realism note for demo
+
+SignalForge now uses Yahoo Finance chart data (public endpoint) for candle-based indicator context:
+
+- moving averages (EMA20 / EMA50 / EMA200)
+- RSI(14)
+- MACD
+- ATR-based volatility proxy
+- volume participation ratio
+
+Gemini then refines this structured context into explainable analyst commentary. If Gemini is unavailable, the app still returns a rule-based technical read.
 
 If first-time environment is empty, quickly run 3 to 5 analyses in different timeframes.
 
@@ -172,6 +185,10 @@ If live generation is slow or unavailable:
 1. Use already generated snapshots in `/analysis`.
 2. Pivot to `/dashboard`, `/watchlist`, and `/history` to show end-to-end workflow value.
 3. Explain that analysis output is persisted and revisit-ready for daily process continuity.
+
+If external data is temporarily unavailable:
+
+4. Mention that SignalForge degrades gracefully to deterministic local analysis logic, so workflows remain usable.
 
 ## Post-demo next steps
 
