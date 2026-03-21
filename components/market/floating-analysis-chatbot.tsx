@@ -27,6 +27,42 @@ type FloatingAnalysisChatbotProps = {
     widgetExplainers: Record<string, string>;
 };
 
+function renderMarkdownLite(content: string) {
+    const lines = content.split('\n');
+
+    return lines.map((line, lineIndex) => {
+        const parts = line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).filter(Boolean);
+
+        return (
+            <span key={`line-${lineIndex}`}>
+                {parts.map((part, partIndex) => {
+                    if (part.startsWith('**') && part.endsWith('**')) {
+                        return (
+                            <strong key={`part-${lineIndex}-${partIndex}`} className="font-semibold text-foreground">
+                                {part.slice(2, -2)}
+                            </strong>
+                        );
+                    }
+
+                    if (part.startsWith('`') && part.endsWith('`')) {
+                        return (
+                            <code
+                                key={`part-${lineIndex}-${partIndex}`}
+                                className="rounded bg-muted px-1 py-0.5 font-mono text-[11px] text-foreground"
+                            >
+                                {part.slice(1, -1)}
+                            </code>
+                        );
+                    }
+
+                    return <span key={`part-${lineIndex}-${partIndex}`}>{part}</span>;
+                })}
+                {lineIndex < lines.length - 1 ? <br /> : null}
+            </span>
+        );
+    });
+}
+
 export function FloatingAnalysisChatbot({
     symbol,
     timeframe,
@@ -224,7 +260,7 @@ export function FloatingAnalysisChatbot({
                                         : 'ml-auto max-w-[85%] bg-primary/10 text-foreground'
                                 }`}
                             >
-                                {message.content}
+                                {renderMarkdownLite(message.content)}
                             </div>
                         ))}
                     </div>
