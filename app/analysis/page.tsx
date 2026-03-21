@@ -3,10 +3,14 @@ import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { BiasPill } from '@/components/market/bias-pill';
 import { InstrumentSearch } from '@/components/market/instrument-search';
+import { PriceChart } from '@/components/market/price-chart';
+import { AnalysisChatbot } from '@/components/market/analysis-chatbot';
 import { runAnalysisAction, toggleWatchlistAction } from '@/app/actions/market-actions';
 import { timeframeDisplay, parseTimeframe } from '@/lib/market/analysis-engine';
 import { INSTRUMENT_UNIVERSE } from '@/lib/market/instruments';
 import { scoreBgClass, scoreToneClass } from '@/lib/market/presentation';
+import { fetchMarketSeries } from '@/lib/market/market-data';
+import { buildMarketContext } from '@/lib/market/indicator-engine';
 import {
     ensureInstrumentsSeeded,
     getCurrentDbUser,
@@ -50,6 +54,24 @@ type WatchlistEntry = {
     };
 };
 
+function buildWhyExplanation(
+    marketContext: ReturnType<typeof buildMarketContext> | null,
+    latestAnalysis: LatestAnalysis | null
+) {
+    if (!marketContext || !latestAnalysis) {
+        return [] as string[];
+    }
+
+    const points = [
+        `Trend context: close ${marketContext.lastClose.toFixed(2)} vs EMA20 ${marketContext.ema20.toFixed(2)} and EMA50 ${marketContext.ema50.toFixed(2)} establishes the primary directional regime.`,
+        `Momentum context: RSI14 at ${marketContext.rsi14.toFixed(1)} and MACD histogram at ${marketContext.macdHistogram.toFixed(3)} informs continuation vs exhaustion risk.`,
+        `Participation context: volume ratio ${marketContext.volumeRatio.toFixed(2)}x confirms whether recent moves have enough conviction to sustain.`,
+        `Risk context: ATR14 at ${marketContext.atr14Pct.toFixed(2)}% of price shapes setup quality (${latestAnalysis.setupQualityScore}) and confidence (${latestAnalysis.confidenceScore}).`,
+    ];
+
+    return points;
+}
+
 export default async function AnalysisPage(props: AnalysisPageProps) {
     const user = await getCurrentDbUser();
 
@@ -70,6 +92,11 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
     const selectedInstrument = symbol
         ? await resolveInstrument(symbol)
         : null;
+
+    const marketSeries = selectedInstrument
+        ? await fetchMarketSeries(selectedInstrument.symbol)
+        : null;
+    const marketContext = marketSeries ? buildMarketContext(marketSeries) : null;
 
     const watchlistRaw = await prisma.watchlistItem.findMany({
         where: { userId: user.id },
@@ -103,6 +130,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
         ? parseTimeframeTable(latestAnalysis.multiTimeframeView as never)
         : [];
     const scenarioPlan = latestAnalysis ? parseScenarioPlan(latestAnalysis.scenarioPlan as never) : [];
+    const whyExplanation = buildWhyExplanation(marketContext, latestAnalysis);
 
     return (
         <main className="flex flex-1 bg-[linear-gradient(180deg,rgba(14,116,144,0.06),transparent_30%),radial-gradient(circle_at_100%_0%,rgba(34,197,94,0.08),transparent_35%)] px-4 py-6 sm:px-6 lg:py-8">
@@ -235,6 +263,65 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                                 </article>
                             </section>
 
+                            {marketSeries ? (
+                                <section className="grid gap-4 lg:grid-cols-[1.25fr_1fr]">
+                                    <PriceChart
+                                        symbol={selectedInstrument.symbol}
+                                        candles={marketSeries.candles}
+                                        supportZones={supportZones}
+                                        resistanceZones={resistanceZones}
+                                    />
+                                    <article className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                                        <h2 className="text-base font-semibold text-foreground">Data exports and traceability</h2>
+                                        <p className="mt-1 text-xs text-muted-foreground">
+                                            Export the raw bars and current analysis snapshot used for this view.
+                                        </p>
+                                        <div className="mt-4 grid gap-2">
+                                            <Button asChild variant="outline" size="sm">
+                                                <Link
+                                                    href={`/api/export/candles-csv?symbol=${encodeURIComponent(selectedInstrument.symbol)}`}
+                                                >
+                                                    Export candles CSV
+                                                </Link>
+                                            </Button>
+                                            <Button asChild variant="outline" size="sm">
+                                                <Link
+                                                    href={`/api/export/analysis-csv?symbol=${encodeURIComponent(selectedInstrument.symbol)}&timeframe=${selectedTimeframe}`}
+                                                >
+                                                    Export analysis CSV
+                                                </Link>
+                                            </Button>
+                                        </div>
+                                        {marketContext ? (
+                                            <div className="mt-4 rounded-lg border border-border/50 bg-background/50 p-3 text-xs text-muted-foreground">
+                                                <p>Source: Yahoo Finance chart endpoint</p>
+                                                <p>Provider symbol: {marketSeries.providerSymbol}</p>
+                                                <p>Bars used: {marketContext.bars}</p>
+                                            </div>
+                                        ) : null}
+                                    </article>
+                                </section>
+                            ) : null}
+
+                            {whyExplanation.length > 0 ? (
+                                <section className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                                    <h2 className="text-base font-semibold text-foreground">AI explanation behind this prediction</h2>
+                                    <p className="mt-1 text-xs text-muted-foreground">
+                                        These factors explain why the model arrived at the current directional and confidence read.
+                                    </p>
+                                    <div className="mt-3 grid gap-2">
+                                        {whyExplanation.map((item) => (
+                                            <p
+                                                key={item}
+                                                className="rounded-lg border border-border/50 bg-background/50 px-3 py-2 text-sm text-muted-foreground"
+                                            >
+                                                {item}
+                                            </p>
+                                        ))}
+                                    </div>
+                                </section>
+                            ) : null}
+
                             <section className="grid gap-4 lg:grid-cols-2">
                                 <article className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
                                     <h2 className="text-base font-semibold text-foreground">Indicator interpretation</h2>
@@ -306,6 +393,21 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                                     </div>
                                 </article>
                             </section>
+
+                            <AnalysisChatbot
+                                symbol={selectedInstrument.symbol}
+                                timeframe={selectedTimeframe}
+                                analysisSummary={{
+                                    directionalBias: latestAnalysis.directionalBias,
+                                    setupQualityScore: latestAnalysis.setupQualityScore,
+                                    confidenceScore: latestAnalysis.confidenceScore,
+                                    trendSummary: latestAnalysis.trendSummary,
+                                    momentumCondition: latestAnalysis.momentumCondition,
+                                    breakoutRisk: latestAnalysis.breakoutRisk,
+                                    reversalRisk: latestAnalysis.reversalRisk,
+                                }}
+                                marketContext={marketContext}
+                            />
                         </>
                     ) : (
                         <section className="rounded-2xl border border-dashed border-border/70 bg-card/70 p-8">

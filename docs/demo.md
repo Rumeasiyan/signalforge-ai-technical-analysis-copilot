@@ -29,6 +29,9 @@ Highlight outputs:
 - indicator interpretation
 - multi-timeframe alignment/conflict
 - scenario plan with invalidation
+- price chart showing bars used for analysis
+- CSV exports for candles and analysis snapshot
+- AI chatbot for deeper Q and A on setup logic
 
 Message: "This is decision support, not blind signal-following."
 

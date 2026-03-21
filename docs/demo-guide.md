@@ -42,6 +42,7 @@ Complete before presenting:
 3. Open `/analysis` and test at least one symbol (for example: NVDA, SPY, BTCUSD).
 4. Open `/watchlist` and confirm setup quality and confidence values show.
 5. Open `/history` and confirm at least a few snapshots exist.
+6. Verify the analysis page chart renders and both CSV export buttons download correctly.
 
 ### Data realism note for demo
 
@@ -99,6 +100,9 @@ Steps:
    - multi-timeframe alignment/conflict
    - bullish/bearish/neutral scenario plan
    - breakout and reversal risk
+   - chart data behind the analysis
+   - CSV exports for market bars and analysis snapshot
+   - chatbot answers for deeper setup explanation
 
 Business message:
 
