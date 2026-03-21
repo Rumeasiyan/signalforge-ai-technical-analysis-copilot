@@ -77,7 +77,7 @@ export function PriceChart({ symbol, candles, supportZones, resistanceZones }: P
     const latest = visibleCandles[visibleCandles.length - 1];
 
     return (
-        <article className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+        <article data-explain-id="price-chart" className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
             <div className="mb-3 flex items-center justify-between gap-3">
                 <div>
                     <h2 className="text-base font-semibold text-foreground">Price data used in analysis</h2>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { BiasPill } from '@/components/market/bias-pill';
 import { InstrumentSearch } from '@/components/market/instrument-search';
 import { PriceChart } from '@/components/market/price-chart';
-import { AnalysisChatbot } from '@/components/market/analysis-chatbot';
+import { FloatingAnalysisChatbot } from '@/components/market/floating-analysis-chatbot';
 import { runAnalysisAction, toggleWatchlistAction } from '@/app/actions/market-actions';
 import { timeframeDisplay, parseTimeframe } from '@/lib/market/analysis-engine';
 import { INSTRUMENT_UNIVERSE } from '@/lib/market/instruments';
@@ -138,7 +138,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                 <InstrumentSearch instruments={INSTRUMENT_UNIVERSE} selectedSymbol={selectedInstrument?.symbol} />
 
                 <section className="space-y-4">
-                    <div className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                    <div data-explain-id="analysis-header" className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                             <div>
                                 <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Analysis desk</p>
@@ -192,7 +192,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                         </section>
                     ) : latestAnalysis ? (
                         <>
-                            <section className="grid gap-4 rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm md:grid-cols-4">
+                            <section data-explain-id="signal-scores" className="grid gap-4 rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm md:grid-cols-4">
                                 <div>
                                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Directional bias</p>
                                     <div className="mt-2">
@@ -223,7 +223,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                             </section>
 
                             <section className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
-                                <article className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                                <article data-explain-id="market-commentary" className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
                                     <h2 className="text-base font-semibold text-foreground">Market commentary</h2>
                                     <p className="mt-3 text-sm leading-7 text-muted-foreground">{latestAnalysis.trendSummary}</p>
                                     <p className="mt-3 text-sm leading-7 text-muted-foreground">{latestAnalysis.plainLanguageView}</p>
@@ -236,7 +236,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                                     <p className="mt-2 text-xs text-muted-foreground">{latestAnalysis.momentumCondition}</p>
                                 </article>
 
-                                <article className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                                <article data-explain-id="key-levels" className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
                                     <h2 className="text-base font-semibold text-foreground">Key levels</h2>
                                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                                         <div>
@@ -271,7 +271,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                                         supportZones={supportZones}
                                         resistanceZones={resistanceZones}
                                     />
-                                    <article className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                                    <article data-explain-id="exports-traceability" className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
                                         <h2 className="text-base font-semibold text-foreground">Data exports and traceability</h2>
                                         <p className="mt-1 text-xs text-muted-foreground">
                                             Export the raw bars and current analysis snapshot used for this view.
@@ -304,7 +304,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                             ) : null}
 
                             {whyExplanation.length > 0 ? (
-                                <section className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                                <section data-explain-id="prediction-explanation" className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
                                     <h2 className="text-base font-semibold text-foreground">AI explanation behind this prediction</h2>
                                     <p className="mt-1 text-xs text-muted-foreground">
                                         These factors explain why the model arrived at the current directional and confidence read.
@@ -323,7 +323,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                             ) : null}
 
                             <section className="grid gap-4 lg:grid-cols-2">
-                                <article className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                                <article data-explain-id="indicator-interpretation" className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
                                     <h2 className="text-base font-semibold text-foreground">Indicator interpretation</h2>
                                     <div className="mt-3 grid gap-2">
                                         {indicatorInsights.map((insight) => (
@@ -336,7 +336,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                                     </div>
                                 </article>
 
-                                <article className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
+                                <article data-explain-id="multi-timeframe-view" className="rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm">
                                     <h2 className="text-base font-semibold text-foreground">Multi-timeframe view</h2>
                                     <div className="mt-3 overflow-hidden rounded-lg border border-border/50">
                                         <table className="w-full text-left text-xs">
@@ -365,7 +365,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                                 </article>
                             </section>
 
-                            <section className="grid gap-4 rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm lg:grid-cols-2">
+                            <section data-explain-id="scenario-risk" className="grid gap-4 rounded-2xl border border-border/60 bg-card/85 p-5 shadow-sm lg:grid-cols-2">
                                 <article>
                                     <h2 className="text-base font-semibold text-foreground">Scenario planning</h2>
                                     <div className="mt-3 grid gap-3">
@@ -394,7 +394,7 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                                 </article>
                             </section>
 
-                            <AnalysisChatbot
+                            <FloatingAnalysisChatbot
                                 symbol={selectedInstrument.symbol}
                                 timeframe={selectedTimeframe}
                                 analysisSummary={{
@@ -407,6 +407,18 @@ export default async function AnalysisPage(props: AnalysisPageProps) {
                                     reversalRisk: latestAnalysis.reversalRisk,
                                 }}
                                 marketContext={marketContext}
+                                widgetExplainers={{
+                                    'analysis-header': 'Header card with selected instrument, controls, and watchlist action.',
+                                    'signal-scores': 'Directional bias, setup quality, confidence, and snapshot timestamp.',
+                                    'market-commentary': 'Narrative explanation of what the chart is doing and why.',
+                                    'key-levels': 'Support and resistance zones used in scenario planning.',
+                                    'price-chart': 'Raw daily price series used for this analysis, with support/resistance overlays.',
+                                    'exports-traceability': 'CSV export controls for candles and latest analysis snapshot.',
+                                    'indicator-interpretation': 'Combined indicator readings and interpretations.',
+                                    'multi-timeframe-view': 'Short, medium, and long-term alignment/conflict table.',
+                                    'prediction-explanation': 'Reasoning behind bias and score outputs from calculated metrics.',
+                                    'scenario-risk': 'Bullish, bearish, neutral scenarios and key risk notes.',
+                                }}
                             />
                         </>
                     ) : (
